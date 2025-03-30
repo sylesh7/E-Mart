@@ -1,9 +1,8 @@
 # Grocery App
 
 A simple **Grocery Management Application** with a **Node.js backend** and **MySQL database**. The app allows users to login, view grocery items, add them to their cart, and track orders.
-
-## 📂 Project Structure
 ```
+## 📂 Project Structure
 E-MART/
 ├── config/
 │   └── db.js                  # Database configuration (MongoDB/MySQL)
