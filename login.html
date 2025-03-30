@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup - GroceryMart</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            <span>GroceryMart</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="grocery.html">Grocery</a></li>
+            <li><a href="login.html" class="active">Login/Signup</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="form-box">
+            <h2>Welcome Back!</h2>
+            <form>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" placeholder="Phone Number" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Login</button>
+                
+                <div class="social-links">
+                    <p>Or Sign in with</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-google"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <p class="signup-text">Don't have an account? <a href="#" class="toggle-form">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            // Basic login validation
+            // In a real application, you would validate with a backend server
+            localStorage.setItem('isLoggedIn', 'true');
+            window.location.href = 'home.html';
+        }
+
+        // Check if user is already logged in
+        window.onload = function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'home.html';
+            }
+        }
+    </script>
+</body>
+</html> 
