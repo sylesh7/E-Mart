@@ -14,7 +14,8 @@ E-MART/
 │   └── signup.html            # User registration page
 ├── routes/
 │   ├── auth.js                # Authentication routes (login/signup)
-│   └── grocery.js             # Grocery item API routes
+│   └── grocery.js
+│   └── api.js                 # Grocery item API routes
 ├── views/                     # HTML templates (if using server-side rendering)
 │   ├── grocery.html           # Duplicate? (Move to `public/` if client-side)
 │   ├── header.html            # Shared header template
