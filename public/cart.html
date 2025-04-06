@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GroceryMart - Grocery</title>
+  <link rel="stylesheet" href="grocery.css" />
+</head>
+<body>
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="left-section">
+      <img src="leaf.png" alt="leaf" class="logo-icon" />
+      <span class="brand-name">GroceryMart</span>
+    </div>
+    <div class="nav-links">
+      <a href="home.html">Home</a>
+      <a href="cart.html">Grocery</a>
+      <a href="index.html" class="login-btn">Login/Signup</a>
+    </div>
+  </nav>
+
+  <!-- SEARCH SECTION -->
+  <div class="container">
+    <div class="search-box-container">
+        <h2 style="color: white;">Search Grocery Items</h2>
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="Enter item name" class="searchInput">
+            <button class="search-btn" onclick="searchItem()">Search</button>
+            <button class="search-btn" onclick="fetchGroceryItems()">Show All</button>
+        </div>
+    </div>
+  </div>
+
+  <!-- GROCERY SECTION -->
+  <div class="grocery-section">
+    <h2>Grocery Items</h2>
+    <h3>Cart Count: <span id="cartCount">0</span></h3>
+    <div class="grocery-grid" id="groceryList">
+      <!-- JS will insert items here -->
+    </div>
+  </div>
+
+  <!-- PURCHASE BUTTON -->
+  <div style="text-align: center; margin: 20px;">
+    <button id="purchaseBtn" class="search-btn">Purchase</button>
+  </div>
+  
+
+  <!-- SCRIPT -->
+  <script>
+    const imageMap = {
+      "Fresh Apples": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6",
+      "Organic Bananas": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e",
+      "Fresh Milk": "https://images.unsplash.com/photo-1563636619-e9143da7973b",
+      "Whole Grain Bread": "https://images.unsplash.com/photo-1509440159596-0249088772ff",
+      "Organic Eggs": "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f",
+      "Chicken Breast": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5",
+      "Basmati Rice": "https://images.unsplash.com/photo-1586201375761-83865001e31c",
+      "Italian Pasta": "https://images.unsplash.com/photo-1551462147-37885acc36f1",
+      "Cheddar Cheese": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d",
+      "Greek Yogurt": "https://images.unsplash.com/photo-1563636619-e9143da7973b",
+      "Orange Juice": "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b",
+      "Mixed Vegetables": "https://images.unsplash.com/photo-1540420773420-3366772f4999",
+      "Olive Oil": "https://images.unsplash.com/photo-1620706857370-e1b9770e8bb1",
+      "Breakfast Cereal": "https://images.unsplash.com/photo-1563725911583-7d108f720483"
+    };
+  
+    // Fetch and display all grocery items
+    async function fetchGroceryItems() {
+      const response = await fetch('/api/grocery');
+      const items = await response.json();
+      renderItems(items);
+    }
+  
+    // Search specific item and show card if found
+    async function searchItem() {
+      const itemName = document.getElementById('searchInput').value.trim();
+      if (!itemName) {
+        alert("Enter item name to search!");
+        return;
+      }
+  
+      const response = await fetch(`/api/grocery/${itemName}`);
+      const data = await response.json();
+  
+      if (data.found) {
+        const item = {
+          id: data.id || Date.now(),
+          item_name: data.item_name,
+          price: data.price
+        };
+        renderItems([item]);
+      } else {
+        document.getElementById('groceryList').innerHTML = `<p style="color:green;">Item not found</p>`;
+      }
+    }
+  
+    // Render items to the grid
+    function renderItems(items) {
+      const groceryList = document.getElementById('groceryList');
+      groceryList.innerHTML = '';
+  
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'grocery-card';
+  
+        const imageUrl = imageMap[item.item_name] || 'https://via.placeholder.com/150';
+  
+        card.innerHTML = `
+          <img src="${imageUrl}" alt="${item.item_name}">
+          <h3>${item.item_name}</h3>
+          <p class="price">₹${item.price}</p>
+          <div class="quantity-wrapper">
+            <label>Quantity: 
+              <input type="number" min="1" value="1" id="quantity-${item.id}" class="quantity-input">
+            </label>
+            <button class="add-to-cart-btn" onclick="addToCart(${item.id}, '${item.item_name}', document.getElementById('quantity-${item.id}').value, ${item.price})">Add to Cart</button>
+          </div>
+        `;
+  
+        groceryList.appendChild(card);
+      });
+    }
+  
+    // Add to cart + show notification card
+    async function addToCart(item_id, item_name, quantity, price) {
+      if (quantity < 1) {
+        alert('Please enter a valid quantity.');
+        return;
+      }
+  
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ item_id, item_name, quantity })
+      });
+  
+      const result = await response.text();
+      if (result === 'Item added to cart!') {
+        showCartNotification(item_name, price);
+      } else {
+        alert(result);
+      }
+  
+      updateCartCount();
+    }
+  
+    // Purchase
+    document.getElementById('purchaseBtn').addEventListener('click', async () => {
+      const button = document.getElementById('purchaseBtn');
+      button.disabled = true;
+  
+      try {
+        const res = await fetch('/api/purchase', { method: 'POST' });
+        const msg = await res.text();
+        alert(msg);
+        location.reload();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  
+    // Initial load
+    fetchGroceryItems();
+    updateCartCount();
+  </script>
+  
+</body>
+</html>

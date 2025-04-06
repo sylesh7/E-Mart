@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - GroceryMart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fas fa-leaf"></i>
+      <span>GroceryMart</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="cart.html">Grocery</a></li>
+      <li><a href="index.html" class="active">Login/Signup</a></li>
+    </ul>
+  </nav>
+
+  <!-- Login Box -->
+<div class="login-container">
+  <div class="form-box">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <div class="input-row">
+          <label for="username">Username:</label>
+          <input type="text" name="username" placeholder="Enter your username" required />
+        </div>
+        <div class="input-row">
+          <label for="email">Email:</label>
+          <input type="email" name="email" placeholder="Enter your email" required />
+        </div>
+        <div class="input-row">
+          <label for="password">Password:</label>
+          <div class="password-field">
+            <input type="password" name="password" placeholder="Enter your password" required />
+            <button type="button" class="show-btn" onclick="togglePassword(this)">Show</button>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="animated-button">
+        <span class="circle"></span>
+        <span class="text">Login</span>
+        <svg class="arr-1" viewBox="0 0 24 24">
+          <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
+        </svg>
+        <svg class="arr-2" viewBox="0 0 24 24">
+          <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
+        </svg>
+      </button>
+    </form>
+
+    <p style="text-align:center; margin-top: 20px;">
+      Don't have an account? 
+      <a href="signup.html" style="color: #009688; font-weight: bold;">Sign up</a>
+    </p>
+
+    <!-- Toast container -->
+    <div id="loginToastContainer"></div>
+  </div>
+</div>
+
+
+      <p style="text-align:center; margin-top: 20px;">
+        Don't have an account? 
+        <a href="signup.html" style="color: #009688; font-weight: bold;">Sign up</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword(btn) {
+      const input = btn.previousElementSibling;
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "Hide";
+      } else {
+        input.type = "password";
+        btn.textContent = "Show";
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+    showLoginToast(data.message, data.success ? "success" : "error");
+
+    if (data.success) {
+      setTimeout(() => {
+        window.location.href = "home.html";
+      }, 2000);
+    }
+  });
+
+  function togglePassword(btn) {
+    const input = btn.previousElementSibling;
+    input.type = input.type === "password" ? "text" : "password";
+    btn.textContent = input.type === "password" ? "Show" : "Hide";
+  }
+
+  function showLoginToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `login-toast ${type}`;
+    toast.innerHTML = `
+      <div class="card-wrapper">
+        <div class="card-icon">
+          <div class="icon-cart-box">
+            <svg viewBox="0 0 576 512" width="20" height="20">
+              <path fill="#009688" d="M0 24C0 10.7..."></path>
+            </svg>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-title-wrapper">
+            <span class="card-title">${message}</span>
+            <span class="card-action" onclick="this.closest('.login-toast').remove()">
+              <svg viewBox="0 0 384 512" width="15" height="15">
+                <path d="..."></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const container = document.getElementById("loginToastContainer");
+    container.innerHTML = '';
+    container.appendChild(toast);
+
+    setTimeout(() => toast.remove(), 3000);
+  }
+  </script>
+</body>
+</html>

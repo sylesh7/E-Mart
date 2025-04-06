@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - GroceryMart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fas fa-leaf"></i>
+      <span>GroceryMart</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="cart.html">Grocery</a></li>
+      <li><a href="index.html">Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="login-container">
+    <div class="form-box">
+      <h2>Sign Up</h2>
+      <form id="signupForm">
+        <div class="input-group">
+          <div class="input-row">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required />
+          </div>
+          <div class="input-row">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required />
+          </div>
+          <div class="input-row">
+            <label for="password">Password:</label>
+            <div class="password-field">
+              <input type="password" id="password" name="password" placeholder="Enter your password" required />
+              <button type="button" class="show-btn" onclick="togglePassword(this)">Show</button>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="animated-button">
+          <span class="circle"></span>
+          <span class="text">Sign Up</span>
+          <svg class="arr-1" viewBox="0 0 24 24">
+            <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
+          </svg>
+          <svg class="arr-2" viewBox="0 0 24 24">
+            <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword(btn) {
+      const pwd = document.getElementById('password');
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        btn.textContent = 'Hide';
+      } else {
+        pwd.type = 'password';
+        btn.textContent = 'Show';
+      }
+    }
+
+    const form = document.getElementById('signupForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: form.username.value,
+            email: form.email.value,
+            password: form.password.value
+          })
+        });
+        const message = await response.text();
+        alert(message);
+        if (message.toLowerCase().includes('success')) {
+          window.location.href = 'home.html';
+        }
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
