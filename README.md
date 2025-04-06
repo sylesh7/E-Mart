@@ -13,18 +13,16 @@ E-MART/
 │   ├── index.html             # Homepage
 │   └── signup.html            # User registration page
 ├── routes/
-│   ├── auth.js                # Authentication routes (login/signup)
-│   └── grocery.js             # Grocery item API routes
+│   ├── api.js                # Grocery item API routes
 ├── views/                     # HTML templates (if using server-side rendering)
-│   ├── grocery.html           # Duplicate? (Move to `public/` if client-side)
-│   ├── header.html            # Shared header template
+│   ├── cart.html           # Duplicate? (Move to `public/` if client-side)
+│   ├── home.html            # Shared header template
 │   ├── home.css               # Homepage styles
 │   ├── index.html             # Duplicate? (Consolidate with `public/index.html`)
-│   ├── login.css              # Login page styles
-│   └── login.html             # Login page template
-├── script.js                  # Frontend JavaScript (move to `public/`)
+│   ├── grocery.css              # Login page styles
+│   └── login.html
+│   └── login.css            # Login page template
 ├── server.js                  # Backend entry point (Express.js)
-├── styles.css                 # Global styles (move to `public/`)
 ├── package.json               # Project metadata and dependencies
 ├── package-lock.json          # Auto-generated dependency tree
 └── README.md                  # Project documentation
@@ -92,6 +90,25 @@ CREATE TABLE order_details (
     quantity INT,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE grocery_list ADD COLUMN image_url TEXT;
+
+
+INSERT INTO grocery_list (item_name, price, quantity, image_url) VALUES
+('Fresh Apples', 50.00, 100, 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6'),
+('Organic Bananas', 40.00, 120, 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e'),
+('Fresh Milk', 60.00, 80, 'https://images.unsplash.com/photo-1563636619-e9143da7973b'),
+('Whole Grain Bread', 45.00, 90, 'https://images.unsplash.com/photo-1509440159596-0249088772ff'),
+('Organic Eggs', 70.00, 75, 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f'),
+('Chicken Breast', 150.00, 50, 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5'),
+('Basmati Rice', 90.00, 100, 'https://images.unsplash.com/photo-1586201375761-83865001e31c'),
+('Italian Pasta', 55.00, 85, 'https://images.unsplash.com/photo-1551462147-37885acc36f1'),
+('Cheddar Cheese', 80.00, 60, 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d'),
+('Greek Yogurt', 65.00, 70, 'https://images.unsplash.com/photo-1563636619-e9143da7973b'),
+('Orange Juice', 50.00, 90, 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b'),
+('Mixed Vegetables', 60.00, 95, 'https://images.unsplash.com/photo-1540420773420-3366772f4999'),
+('Olive Oil', 130.00, 40, 'https://images.unsplash.com/photo-1620706857370-e1b9770e8bb1'),
+('Breakfast Cereal', 75.00, 100, 'https://images.unsplash.com/photo-1563725911583-7d108f720483');
 ```
 ### Trigger to Sync Users with Login and Signin Tables
 ```sql
