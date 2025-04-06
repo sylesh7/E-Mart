@@ -6,10 +6,14 @@ const db = require('../config/db');
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
     db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, result) => {
-        if (err) throw err;
-        res.send(result.length ? 'Login Successful' : 'Invalid Credentials');
+      if (err) throw err;
+      res.json({
+        success: result.length > 0,
+        message: result.length ? 'Login Successful' : 'Invalid Credentials'
+      });
     });
-});
+  });
+  
 
 // Fetch all grocery items
 router.get('/grocery', (req, res) => {
@@ -136,6 +140,9 @@ router.get('/grocery/:item_name', (req, res) => {
         }
     });
 });
+
+
+
 
 
 // Sign-Up Route
