@@ -1,0 +1,29 @@
+{
+  "name": "grocery-app",
+  "version": "1.0.0",
+  "description": "A simple **Grocery Management Application** with a **Node.js backend** and **MySQL database**. The app allows users to login, view grocery items, add them to their cart, and track orders.\r ```\r ## 📂 Project Structure\r E-MART/\r ├── config/\r │   └── db.js                  # Database configuration (MongoDB/MySQL)\r ├── node_modules/              # Installed dependencies (auto-generated)\r ├── public/                    # Static files (frontend)\r │   ├── cart.html              # Shopping cart page\r │   ├── grocery.html           # Grocery items page\r │   ├── index.html             # Homepage\r │   └── signup.html            # User registration page\r ├── routes/\r │   ├── api.js                # Grocery item API routes\r ├── views/                     # HTML templates (if using server-side rendering)\r │   ├── cart.html           # Duplicate? (Move to `public/` if client-side)\r │   ├── home.html            # Shared header template\r │   ├── home.css               # Homepage styles\r │   ├── index.html             # Duplicate? (Consolidate with `public/index.html`)\r │   ├── grocery.css              # Login page styles\r │   └── login.html\r │   └── login.css            # Login page template\r ├── server.js                  # Backend entry point (Express.js)\r ├── package.json               # Project metadata and dependencies\r ├── package-lock.json          # Auto-generated dependency tree\r └── README.md                  # Project documentation\r ```",
+  "main": "auth.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sylesh7/E-Mart.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sylesh7/E-Mart/issues"
+  },
+  "homepage": "https://github.com/sylesh7/E-Mart#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.0"
+  },
+  "devDependencies": {}
+}

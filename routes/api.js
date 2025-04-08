@@ -13,7 +13,7 @@ router.post('/login', (req, res) => {
       });
     });
   });
-  
+ 
 
 // Fetch all grocery items
 router.get('/grocery', (req, res) => {
@@ -79,7 +79,7 @@ router.post('/purchase', async (req, res) => {
 
             // Insert into order_details
             await db.promise().query(
-                'INSERT INTO order_details (item_name, quantity) VALUES (?, ?)', 
+                'INSERT INTO order_details (item_name, quantity) VALUES (?, ?)',
                 [item_name, quantity]
             );
 
@@ -105,7 +105,7 @@ router.post('/purchase', async (req, res) => {
 });
 
 
-  
+ 
 // Get cart count (sum of all quantities)
 router.get('/cart/count', (req, res) => {
     db.query('SELECT SUM(quantity) AS total FROM cart', (err, result) => {

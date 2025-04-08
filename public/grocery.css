@@ -24,10 +24,16 @@ body {
     gap: 10px;
 }
 
-.logo-icon {
+.logo{
     width: 32px;
     height: 32px;
     filter: brightness(0) invert(1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 25px;
+    padding-top: 4px;
+
 }
 
 .brand-name {
@@ -412,3 +418,17 @@ h2 {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgb(98, 255, 164);
 }
+.logo-icon {
+    font-size: 25px;          /* Make it larger */
+    color: white;
+    margin-right: 1px;
+    transform: translateY(2px); /* Align vertically */
+  }
+  .brand-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    transform: translateY(2px); /* Minor alignment tweak */
+  }
+  
